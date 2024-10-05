@@ -1,6 +1,11 @@
 # Exam #N: "Exam Title"
 ## Group: 18
-## Students: s123456 LASTNAME FIRSTNAME 
+
+## Server
+
+Initialize: `npm install`
+Run server: `npm start`
+Run tests: `npm test`
 
 ## React Client Application Routes
 
