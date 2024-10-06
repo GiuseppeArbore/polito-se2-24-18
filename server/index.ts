@@ -1,5 +1,6 @@
 const cors = require('cors');
 import express from 'express';
+import initRoutes from './src/routes';
 
 const app: express.Application = express();
 
@@ -11,9 +12,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-app.get("/queue/number", async (req, res) => {
-  res.status(200).json({ok: "ok"});
-});
+initRoutes(app);
 
 if (!module.parent) {
   app.listen(port, () => {
