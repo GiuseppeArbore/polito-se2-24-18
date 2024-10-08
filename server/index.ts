@@ -1,6 +1,7 @@
 const cors = require('cors');
 import express from 'express';
 import initRoutes from './src/routes';
+import db from './src/db/db'
 
 const app: express.Application = express();
 
@@ -15,7 +16,8 @@ app.use(cors(corsOptions));
 initRoutes(app);
 
 if (!module.parent) {
-  app.listen(port, () => {
+  app.listen(port, async () => {
+    await db.open()
     console.log(`Server listening at http://localhost:${port}`);
   });
 }
