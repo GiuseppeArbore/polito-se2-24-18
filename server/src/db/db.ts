@@ -1,3 +1,4 @@
+"use strict"
 import sqlite3 from 'sqlite3'
 import { Database } from 'sqlite'
 
