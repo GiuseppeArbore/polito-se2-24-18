@@ -22,7 +22,7 @@ function GetServices() {
                         Service Type 4
                     </li>
                 </ul>
-                <button className='btn'>Get Ticket</button>
+                {/* <button className='btn'>Get Ticket</button> */}
             </div>
         </>
     )
