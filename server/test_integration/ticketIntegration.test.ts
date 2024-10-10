@@ -8,17 +8,19 @@ describe('Ticket API Integration Tests', () => {
     const response = await request(app).get(`/api/tickets/${serviceId}`);
 
     expect(response.status).toBe(200);
+    expect(response.body).toBe(35);
+    
    
   });
 
   it('should return 400 if service_id is not provided', async () => {
     const response = await request(app).get('/api/tickets/');
 
-    expect(response.status).toBe(404); // La route non esiste senza service_id
+    expect(response.status).toBe(404); 
   });
 
   it('should return 500 if there is a database error', async () => {
-    // Simula un errore del database, ad esempio, passando un ID di servizio non valido
+    
     const invalidServiceId = 'invalid';
 
     const response = await request(app).get(`/api/tickets/${invalidServiceId}`);
