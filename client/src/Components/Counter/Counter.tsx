@@ -17,12 +17,8 @@ function GetCounter(props: GetCounterProps) {
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '3rem', justifyContent: 'space-around' }}>
             {Array.from({ length: props.total_counter }, (_, index) => (
                 <Card key={index} style={{ width: '18rem', marginBottom: '1rem' }}>
-                <Card.Img variant="top" src={`/numbers/${index + 1}.png`} style={{ height: '180px', objectFit: 'contain' }} />
+                <Card.Img variant="top" src={`/numbers/${index + 1}.png`} style={{ height: '180px', objectFit: 'contain', borderRadius: '8px' }} />
                 <Card.Body>
-                    <Card.Title>Counter {index + 1}</Card.Title>
-                    <Card.Text>
-                    We could add the list of services that this counter should offer
-                    </Card.Text>
                     <Button variant="primary" onClick={() => navigate(`/counter/${index + 1}`)}>Go to Counter {index + 1}</Button>
                 </Card.Body>
                 </Card>
