@@ -20,9 +20,21 @@ class TicketController {
             const tickets = await this.dao.getTicket(Number(service_id));
             res.status(200).json(tickets);
         } catch (error) {
-            res.status(500).json({ message: (error as Error).message });
+            const status = (error as any).status || 500;
+            res.status(status).json({ message: (error as Error).message });
         }
     }
+
+    async resetServiceCounters(req: Request, res: Response): Promise<void> {
+       
+        try {
+          await this.dao.resetServiceCounters();
+          res.status(200).json({ message: 'Service counters reset successfully' });
+        } catch (error) {
+            const status = (error as any).status || 500;
+          res.status(status).json({ message: (error as Error).message });
+        }
+      }
 
   
 }
