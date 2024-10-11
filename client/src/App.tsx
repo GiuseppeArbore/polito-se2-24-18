@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
 import './App.css';
 import React from 'react';
 import { Route, Routes, useRoutes} from 'react-router-dom';
 
 import GetCounter from './Components/Counter/Counter';
+import OfficeDesk from './Components/Counter/OfficeDesk';
 
 
 
@@ -17,7 +16,7 @@ function App(): JSX.Element {
      
       <Routes>
           <Route path="/counter" element={ <GetCounter total_counter={9}/> }/> 
-        
+          <Route path="/counter/:numero" element={ <OfficeDesk /> }/>
       </Routes>
     </>
     
