@@ -3,8 +3,8 @@ import db from '../db/db';
 class TicketDAO {
   
   async getTicket(service_id: number): Promise<number> {
-    const updateQuery = 'UPDATE services SET current_number = current_number + 1, queue_length = queue_length + 1 WHERE id = ?';
-    const selectQuery = 'SELECT current_number FROM services WHERE id = ?';
+    const updateQuery = 'UPDATE services SET queue_length = queue_length + 1 WHERE id = ?';
+    const selectQuery = 'SELECT queue_length FROM services WHERE id = ?';
 
     
       const serviceExistsQuery = 'SELECT 1 FROM services WHERE id = ?';
@@ -25,7 +25,7 @@ class TicketDAO {
       if (!row) {
         throw new Error('No row found for the given service_id');
       }
-      return row.current_number;
+      return row.queue_length;
    
   }
 
