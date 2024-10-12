@@ -17,7 +17,7 @@ function App(): JSX.Element {
       <Routes>
           <Route path="/counter" element={ <GetCounter total_counter={9}/> }/> 
         
-          <Route path='/ticket/:ticket_number' element={ <GetTicket /> } />
+          <Route path='/ticket/:service_type/:ticket_number' element={ <GetTicket /> } />
       </Routes>
     </>
     
