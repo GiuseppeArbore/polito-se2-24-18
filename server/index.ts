@@ -2,6 +2,9 @@ const cors = require('cors');
 import express from 'express';
 import initRoutes from './src/routes';
 import db from './src/db/db'
+import { Request, Response, NextFunction } from 'express';
+
+
 
 const app: express.Application = express();
 
@@ -14,6 +17,11 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 initRoutes(app);
+
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  const status: number = err.status || 500;
+  res.status(status).json({ message: err.message });
+})
 
 if (!module.parent) {
   app.listen(port, async () => {
