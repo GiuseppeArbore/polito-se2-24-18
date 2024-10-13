@@ -1,50 +1,47 @@
-import crypto from "crypto"; 
+
+import { promisify } from 'util';
 import db from "../db/db"
 import { Service } from "../components/service";
 import { ServiceAlreadyExistsError }  from "../errors/servicesError"
 
 class ServiceDAO {
 
-    createService(description: string, queue_length: number, current_number: number, service_time: number): Promise<boolean> {
-        return new Promise<boolean>((resolve, reject) => {
-            try {
-                const sql = "INSERT INTO services(description, queue_length, current_number, service_time) VALUES(?, ?, ?, ?)"
-                db.run(sql, [description, queue_length, current_number, service_time], (err: Error | null) => {
-                    if (err) {
-                        if (err.message.includes("UNIQUE constraint failed: services.description")) reject(new ServiceAlreadyExistsError)
-                        reject(err)
-                    }
-                    resolve(true)
-                })
-            } catch (error) {
-                reject(error)
+    async createService(description: string, queue_length: number, current_number: number, service_time: number): Promise<boolean> {
+        try {
+            const sql = "INSERT INTO services(description, queue_length, current_number, service_time) VALUES(?, ?, ?, ?)";
+            const res = await db.run(sql, [description, queue_length, current_number, service_time]);
+            return true;
+        } catch (err ) {
+            if (err instanceof Error) {
+                if (err.message.includes("UNIQUE constraint failed: services.description")) {
+                    throw new ServiceAlreadyExistsError();
+                }
+                throw err;
+            } else {
+                throw new Error("An unknown error occurred");
             }
-
-        })
+        }
     }
 
     async getAllServices(): Promise<Service[]> {
-        console.log("getAllServices in serviceDAO");
-        console.log("DB instance:", db);
-        return new Promise<Service[]>((resolve, reject) => {
-            try {
-                console.log("before selecting...");
-                const sql = "select * from services";
-                
-                db.all(sql, [], (err: Error | null, rows: Service[]) => {  // Use db.all to get all rows from a SELECT query
-                    if (err) {
-                        console.log("error in try: ", err);
-                        reject(err);
-                    } else {
-                        console.log("SUCCES");
-                        resolve(rows);  // Resolve with the fetched rows
-                    }
-                });
-            } catch (error) {
-                console.log("error in getAllServices in serviceDAO", error);
-                reject(error);
+        try {
+            // Query to select all records from the services table
+            const sql = "SELECT * FROM services";
+            
+            // Execute the query and get all rows
+            const rows = await db.all(sql, []);
+            
+            // Return the retrieved rows
+            return rows;
+        } catch (error) {
+            if (error instanceof Error) {
+                // Throw a descriptive error message
+                throw new Error(`Failed to retrieve services: ${error.message}`);
+            } else {
+                // Throw a generic error message
+                throw new Error("Failed to retrieve services due to an unknown error");
             }
-        });
+        }
     }
 }
 
