@@ -32,13 +32,9 @@ class TicketDAO {
   async resetServiceCounters(): Promise<void> {
     const resetQuery = 'UPDATE services SET current_number = 0, queue_length = 0';
 
-    try {
-      const res = await db.run(resetQuery, []);
-      if (res.changes === 0) {
-        throw new Error('No rows updated');
-      }
-    } catch (err) {
-      throw err;
+    const res = await db.run(resetQuery, []);
+    if (res.changes === 0) {
+      throw new Error('No rows updated');
     }
   }
   
