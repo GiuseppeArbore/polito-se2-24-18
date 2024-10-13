@@ -15,6 +15,7 @@ const corsOptions = {
 };
 app.use(router);
 app.use(cors(corsOptions));
+app.use(express.json());
 
 initRoutes(router);
 registerErrorHandler(router);

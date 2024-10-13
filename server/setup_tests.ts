@@ -6,6 +6,6 @@ setDefaultResultOrder("ipv4first");
 
 // Always open the db before starting tests. Not always necessary, but
 // potentially avoids mistakes
-global.beforeEach(async () => {
+global.beforeAll(async () => {
     await db.open()
 })
