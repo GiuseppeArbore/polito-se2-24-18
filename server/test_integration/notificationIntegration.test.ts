@@ -13,10 +13,11 @@ describe('Notification controller API tests', () => {
   });
 
   it('1 - correct api usage', async () => {
-    const ticketNumber = 3;
+    const serviceId = 3;
     const counter = 3;
 
-    notificationController.addTicket(ticketNumber);
+    const response = await request(server).get(`/api/tickets/${serviceId}`);
+    const ticketNumber = Number((response.body as string).split('-')[1]);
     const ws = await request(server).ws(`/api/tickets/notification/${ticketNumber}`);
 
     ws.on('message', (data: WebSocket.RawData, isBinary: boolean) => {

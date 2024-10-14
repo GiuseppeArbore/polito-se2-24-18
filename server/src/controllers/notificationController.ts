@@ -77,6 +77,15 @@ class NotificationController {
 
         return true;
     }
+
+    removeAll(): void {
+        this.active.forEach((value) => {
+            if (value && value.readyState !== value.CLOSED && value.readyState !== value.CLOSING) {
+                value.close();
+            }
+        });
+        this.active.clear();
+    }
 }
 
 const notificationController = new NotificationController()
