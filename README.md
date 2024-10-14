@@ -13,6 +13,7 @@ Run tests: `npm test`
 
 - Route `/`: page content and purpose
 - Route `/something/:param`: page content and purpose, param specification
+- Route `/ticket/:service_type(int)/:ticket_number(int)`: page to see the client ticket
 - ...
 
 ## API Server
