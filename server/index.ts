@@ -2,7 +2,6 @@ const cors = require('cors');
 import initRoutes from './src/routes';
 import db from './src/db/db'
 import { WebSocketExpress, Router } from 'websocket-express';
-import { Request, Response, NextFunction } from 'express'
 import { registerErrorHandler } from './src/errorHandlers';
 
 const app = new WebSocketExpress();
@@ -20,11 +19,6 @@ app.use(cors(corsOptions));
 initRoutes(router);
 registerErrorHandler(router);
 const server = app.createServer()
-
-//app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-//  const status: number = err.status || 500;
-//  res.status(status).json({ message: err.message });
-//})
 
 if (!module.parent) {
   server.listen(port, async () => {

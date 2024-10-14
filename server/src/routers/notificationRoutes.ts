@@ -1,16 +1,15 @@
-import { Router } from "websocket-express";
-import NotificationController from "../controllers/notificationController";
+import { Router, WSResponse } from "websocket-express";
+import notificationController from "../controllers/notificationController";
 import { param } from 'express-validator'
-import { validateRequest } from "../errorHandlers";
+import { validateWsRequest } from "../errorHandlers";
 
 const router = new Router()
-const notificationController = new NotificationController()
 
-router.ws("/tickets/:ticketId", [
-        param("ticketId").exists().isInt()
+router.ws("/tickets/notification/:ticketId", [
+        param("ticketId").exists().isInt({min: 0})
     ],
-    validateRequest,
-    async (req: any, res: any) => {
+    validateWsRequest,
+    async (req: any, res: WSResponse) => {
         const ticketId = Number(req.params.ticketId);
 
         const ws = await res.accept();

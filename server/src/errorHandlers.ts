@@ -13,6 +13,14 @@ function validateRequest(req: any, res: any, next: any) {
     return next()
 }
 
+function validateWsRequest(req: any, res: any, next: any) {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return res.status(422)
+    }
+    return next()
+}
+
 function registerErrorHandler(router: Router) {
     router.use((err: any, req: any, res: any, next: any) => {
         return res.status(err.customCode || 400).json({
@@ -23,4 +31,4 @@ function registerErrorHandler(router: Router) {
 }
 
 
-export { validateRequest, registerErrorHandler }
+export { validateRequest, validateWsRequest, registerErrorHandler }

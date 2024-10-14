@@ -34,4 +34,6 @@ class NotificationController {
     }
 }
 
-export default NotificationController;
+const notificationController = new NotificationController()
+
+export default notificationController;

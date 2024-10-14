@@ -17,6 +17,7 @@
     "morgan": "^1.10.0",
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7",
+    "superwstest": "^2.0.4",
     "websocket-express": "^3.1.1",
     "ws": "^8.18.0"
   },
