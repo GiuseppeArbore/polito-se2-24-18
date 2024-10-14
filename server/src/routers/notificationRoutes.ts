@@ -11,11 +11,14 @@ router.ws("/tickets/notification/:ticketId", [
     validateWsRequest,
     async (req: any, res: WSResponse) => {
         const ticketId = Number(req.params.ticketId);
+        if (!notificationController.hasTicket(ticketId)) {
+            return res.status(422);
+        }
 
         const ws = await res.accept();
-        notificationController.add(ticketId, ws)
+        notificationController.addConnection(ticketId, ws)
         ws.on('close', () => {
-            notificationController.remove(ticketId);
+            notificationController.removeConnection(ticketId);
         });
     }
 );

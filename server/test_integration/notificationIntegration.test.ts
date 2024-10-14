@@ -16,6 +16,7 @@ describe('Notification controller API tests', () => {
     const ticketNumber = 3;
     const counter = 3;
 
+    notificationController.addTicket(ticketNumber);
     const ws = await request(server).ws(`/api/tickets/notification/${ticketNumber}`);
 
     ws.on('message', (data: WebSocket.RawData, isBinary: boolean) => {
@@ -23,7 +24,8 @@ describe('Notification controller API tests', () => {
       expect(data).toStrictEqual(Buffer.from(`${counter}\n`))
     });
 
-    notificationController.notify(ticketNumber, counter);
+    const ret = notificationController.notify(ticketNumber, counter);
+    expect(ret).toBe(true);
   });
 
   it('2 - negative ticket number', async () => {
