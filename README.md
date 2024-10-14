@@ -13,6 +13,8 @@ Run tests: `npm test`
 
 - Route `/`: page content and purpose
 - Route `/something/:param`: page content and purpose, param specification
+- Route `/counter/:number/:ticket_number?` : page of the counter desk, ticket_number has a value if the officer is serving a client
+
 - ...
 
 ## API Server
