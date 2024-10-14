@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon index.ts",
     "dev": "nodemon index.ts",
-    "test": "set NODE_ENV=test && jest"
+    "test": "set NODE_ENV=test && jest --runInBand"
   },
   "author": "",
   "license": "ISC",
