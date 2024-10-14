@@ -18,9 +18,7 @@ class ServiceController {
     public async getAllServices(req: Request, res: Response): Promise<void> {
      
         try {
-            console.log("getAllServices in serviceController");
             const services = await this.dao.getAllServices();
-            console.log("services resp in serviceController", services);
 
             res.status(200).json(services);
         } catch (error) {

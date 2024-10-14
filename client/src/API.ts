@@ -17,9 +17,8 @@ const getTicket = async (service_id:number) => {
 
   
   const getAllServices = async () => {
-    console.log("TH");
+   
     const response = await fetch(`${SERVER_URL}/api/services`);
-    console.log("services: ", response);
     if (response.ok) {
         const services = await response.json()
         return services;

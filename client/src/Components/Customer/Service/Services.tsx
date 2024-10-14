@@ -10,31 +10,10 @@ function GetServices() {
     const [serviceList, setServiceList] = useState<Service[]>([]);
     const [error, setError] = useState<string>("")
 
-    // useEffect(() => {
-    //     const getServices = async () => {
-    //         try {
-    //             const services = await API.getAllServices()
-    //             let srvs: string[] = []
-    //             services.forEach((p: Service) => {
-    //                 if (!srvs.includes(p.description)) srvs.push(p.description)
-    //             })
-    //             console.log("srvs: ", srvs);
-    //             setServiceList(services)
-    //             setError("")
-    //         } catch (error: any) {
-    //             console.log(error)
-    //             setError(error.error ? error.error : error.message ? error.message : typeof error === 'string' ? error : "An error occurred")
-    //         }
-    //     }
-    //     getServices()
-    // }, [])
-
     useEffect(() => {
         const getServices = async () => {
-            console.log("Fetching services...");
             try {
                 const services = await API.getAllServices();
-                console.log("Services fetched: ", services);
                 setServiceList(services);
                 setError("");
             } catch (error: any) {
