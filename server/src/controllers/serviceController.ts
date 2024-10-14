@@ -1,4 +1,3 @@
-import { Service } from "../components/service";
 import ServiceDAO from "../dao/serviceDAO";
 import { Request, Response } from 'express';
 /**
