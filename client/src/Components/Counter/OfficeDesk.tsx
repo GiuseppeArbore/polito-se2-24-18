@@ -16,7 +16,7 @@ function OfficeDesk() {
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 {showAlert ? (
                     <Alert variant="success" onClose={handleClose}>
-                        <Alert.Heading>Next Customer is 123</Alert.Heading>
+                        <Alert.Heading className="large-heading">Next Customer is {ticket_number}</Alert.Heading>
                         <p>
                             When the customer arrives, please click on the button below to proceed.
                         </p>

@@ -40,3 +40,7 @@
 .read-the-docs {
   color: #888;
 }
+
+.large-heading {
+  font-size: 2em; /* Puoi regolare la dimensione come preferisci */
+}
