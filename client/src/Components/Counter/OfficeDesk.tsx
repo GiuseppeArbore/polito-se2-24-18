@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
-import { Alert, Button } from 'react-bootstrap';
+import React, { useEffect, useState, useContext } from 'react';
+import { Alert, Button, Container, Row, Spinner } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
 function OfficeDesk() {
-    const { number, ticket_number } = useParams<{ number: string, ticket_number?: string }>();
+    const { number } = useParams<{ number: string }>();
+    const [ticket_number, setTicketNumber] = useState<string | undefined>(undefined);
     const [showAlert, setShowAlert] = useState(false);
-
     const handleShow = () => setShowAlert(true);
     const handleClose = () => setShowAlert(false);
+
+    
 
     return (
         <>
@@ -28,7 +30,19 @@ function OfficeDesk() {
                 <>
                     {ticket_number && <h2>Current Customer: {ticket_number}</h2>}
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '3rem', justifyContent: 'space-around' }}>
-                        <Button variant="primary" onClick={handleShow}>Next Customer</Button>
+                        <Button variant="primary" onClick={async () => {
+                            try {
+                               const response = "6";  //await API.getNextCustomer();
+                                if (response /*&& response.ticket_number*/) {
+                                    // Assuming you have a way to update the ticket_number in your component state
+                                    // You might need to lift the state up or use a context
+                                    setTicketNumber(response/*.ticket_number*/);
+                                    handleShow();
+                                }
+                            } catch (error) {
+                                console.error("Failed to fetch next customer", error);
+                            }
+                        }}>Next Customer</Button>
                     </div>
                 </>
             )}
