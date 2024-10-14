@@ -40,7 +40,6 @@ function GetServices() {
             try {
                 const tkt = await API.getTicket(service_id);
                 setTicket(tkt);
-                console.log("tkt", tkt);
                 setError("");
                 setticketIsRequested(false)
 
@@ -49,7 +48,8 @@ function GetServices() {
                 setError(error.error || error.message || "An error occurred");
             }
         };
-        getTicket(serviceId);
+        if (serviceId > 0)
+            getTicket(serviceId);
     }, [ticketIsRequested]);
 
     const returnToList = () => {
@@ -70,7 +70,7 @@ function GetServices() {
                     {serviceList.map((service: Service) => 
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '3rem', justifyContent: 'space-around' }} key={service.id}>
                 
-                        <Card key={service.description} style={{ width: '18rem', marginBottom: '1rem' }}>
+                        <Card key={service.description} style={{ width: '18rem' }}>
                         <Card.Body>
                             <Button value={service.id} variant="primary" onClick={() => generateTicket(service.id)}>
                                 {service.description}
@@ -86,7 +86,7 @@ function GetServices() {
                 ticket != "" && 
                 <>
                     <h1>Your turn is </h1>
-                     <Card key={ticket} style={{ width: '18rem', marginBottom: '1rem' }}>
+                     <Card key={ticket} style={{ width: '18rem' }}>
                         <Card.Body>
                             <Button value={ticket} variant="primary" >
                                 {ticket}
