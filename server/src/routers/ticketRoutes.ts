@@ -5,8 +5,6 @@ import TicketController from '../controllers/ticketController';
 const router = express.Router();
 const ticketController = new TicketController();
 
-
-
 router.get('/tickets/:service_id', (req, res, next) => {
   const serviceId = Number(req.params.service_id);
   if (isNaN(serviceId)) {
