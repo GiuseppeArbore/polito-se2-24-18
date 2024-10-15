@@ -24,6 +24,9 @@ function GetTicket() {
             <h2 style={{ textAlign: 'center' }}>for S{service_type}</h2>
             <Alert variant="info" style={{ textAlign: 'center' }}>Please wait for your turn</Alert>
             <img src={dataUrl} alt="qr code" />
+            <p style={{ textAlign: 'center', marginTop: '1rem' }}>
+                Scan the QR code above to get all  the information about your ticket
+            </p>
         </>
     );
 }
