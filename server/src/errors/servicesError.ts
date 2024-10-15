@@ -8,7 +8,7 @@ class ServiceAlreadyExistsError extends Error {
     constructor() {
         super()
         this.customMessage = Service_ALREADY_EXISTS
-        this.customCode = 401;
+        this.customCode = 409;
     }
 }
 
