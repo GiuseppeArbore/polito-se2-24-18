@@ -122,7 +122,7 @@ describe('Line API Integration Tests', () => {
       expect(response.status).toBe(400);
     });
 
-    it('Test 11: should handle missing Content-Type header', async () => {
+    it('Test 11:  should handle missing Content-Type header', async () => {
       const response = await request(app)
         .post('/api/line/next-customer')
         .send({ service_ids: [1, 2, 3] });
