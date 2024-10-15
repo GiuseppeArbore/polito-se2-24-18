@@ -1,5 +1,4 @@
 import React from 'react'
-import "./Service.scss"
 import API from "../../../API"
 import { useEffect, useState } from "react"
 import { Service } from '../../../Models/service'
@@ -48,7 +47,7 @@ function GetServices() {
                 setError(error.error || error.message || "An error occurred");
             }
         };
-        if (serviceId > 0)
+        if (serviceId > 0 && ticketIsRequested)
             getTicket(serviceId);
     }, [ticketIsRequested]);
 
