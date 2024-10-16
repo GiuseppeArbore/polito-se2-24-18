@@ -28,6 +28,22 @@ const getTicket = async (service_id:number) => {
     const data = await response.json();
     return data.nextCustomerId;
   };
+
+  const getAllServices = async () => {
+   
+    const response = await fetch(`${SERVER_URL}/api/services`);
+    if (response.ok) {
+        const services = await response.json()
+        return services;
+    } else {
+        const errDetail = await response.json();
+        if (errDetail.error)
+            throw errDetail.error
+        if (errDetail.message)
+            throw errDetail.message
+        throw new Error("Error. Please reload the page")
+    }
+}
   
-const API ={getTicket,getNextCustomer};
+const API ={getTicket,getNextCustomer, getAllServices};
 export default API;
