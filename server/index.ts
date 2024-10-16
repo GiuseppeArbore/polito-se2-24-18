@@ -11,9 +11,10 @@ const app: express.Application = express();
 const port: number = 3001;
 
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost', 'http://localhost:5173'],
   credentials: true,
 };
+
 app.use(cors(corsOptions));
 
 initRoutes(app);
