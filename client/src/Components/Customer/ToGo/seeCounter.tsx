@@ -4,7 +4,7 @@ import { Button, Card } from 'react-bootstrap';
 
 function SeeCounter() {
 
-    const [counter, setCounter] = useState<string>("NUM 3"); // this value will be updated
+    const [counter, setCounter] = useState<string>(""); // this value will be updated
     const [error, setError] = useState<string>("");
 
 
@@ -26,6 +26,20 @@ function SeeCounter() {
         <>
 
             <div>
+            {
+                    counter == "" && 
+                    <>
+                     <h3>Please wait to be called by a counter... </h3>
+                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '3rem', justifyContent: 'space-around' }} >
+                       
+                        <Card key={counter} >
+                            <Card.Body>
+                               <img src="../../../../public/loading.gif"/>
+                            </Card.Body>
+                        </Card>
+                        </div>
+                    </>
+                }
                 {
                     counter != "" && 
                     <>
