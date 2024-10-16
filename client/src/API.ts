@@ -14,13 +14,13 @@ const getTicket = async (service_id:number) => {
   return data;
   }
 
-  const getNextCustomer = async (service_ids: number[]) => {
+  const getNextCustomer = async () => {
     const response = await fetch(`${SERVER_URL}/api/line/next-customer`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ service_ids })
+      body: JSON.stringify({  })
     });
     if (!response.ok) {
       throw new Error('Network response was not ok');
