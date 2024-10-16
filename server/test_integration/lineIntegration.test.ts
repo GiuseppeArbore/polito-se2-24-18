@@ -9,6 +9,7 @@ import db from '../src/db/db';
 
 
 describe('Line API Integration Tests', () => {
+
   beforeAll(async () => {
     
     await db.run('CREATE TABLE IF NOT EXISTS services (id INTEGER PRIMARY KEY,description TEXT NOT NULL,queue_length INTEGER NOT NULL,current_number INTEGER NOT NULL,service_time INTEGER NOT NULL)');
@@ -21,7 +22,11 @@ describe('Line API Integration Tests', () => {
 
 
   describe('POST /api/line/next-customer', () => {
+
+    
     it('Test 1: should return the next customer ID', async () => {
+     
+
       const response = await request(app)
         .post('/api/line/next-customer')
         .send({ service_ids: [1, 2, 3] });
@@ -76,6 +81,8 @@ describe('Line API Integration Tests', () => {
     });
 
     it('Test 6: should handle multiple service IDs correctly', async () => {
+
+
       const response = await request(app)
         .post('/api/line/next-customer')
         .send({ service_ids: [2, 3, 4] });

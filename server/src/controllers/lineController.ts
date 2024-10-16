@@ -10,7 +10,12 @@ class LineController {
 
   async getNextCustomer(req: Request, res: Response): Promise<void> {
     const serviceIds: number[] = req.body.service_ids;
+<<<<<<< HEAD
     if (!serviceIds || !Array.isArray(serviceIds)) {
+=======
+  
+    if (!serviceIds || !Array.isArray(serviceIds) || serviceIds.length === 0 || !serviceIds.every(id => typeof id === 'number' && id > 0 && Number.isInteger(id))) {
+>>>>>>> 654ece7 (unit tests)
       res.status(400).send({ error: 'Invalid service_ids' });
       return;
     }

@@ -2,7 +2,7 @@ import db from '../db/db';
 
 class LineDAO {
   
-  private async validateServiceIds(serviceIds: number[]): Promise<void> {
+  async validateServiceIds(serviceIds: number[]): Promise<void> {
     const serviceExistsQuery = 'SELECT id FROM services';
     const rows = await db.all(serviceExistsQuery);
 
