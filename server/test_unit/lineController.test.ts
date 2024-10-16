@@ -51,12 +51,12 @@ describe('LineController', () => {
 
     it('4 - should return 200 with next customer ID for valid service_ids', async () => {
       req.body = { service_ids: [1, 2] };
-      lineDAOMock.getNextCustomer.mockResolvedValue('S1-6');
+      lineDAOMock.getNextCustomer.mockResolvedValue({"serviceType": 1, "ticketNumber": 6});
 
       await lineController.getNextCustomer(req as Request, res as Response);
 
       expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.send).toHaveBeenCalledWith({ nextCustomerId: 'S1-6' });
+      expect(res.send).toHaveBeenCalledWith({ nextCustomerId: {"serviceType": 1, "ticketNumber": 6} });
     });
 
 

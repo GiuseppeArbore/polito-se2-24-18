@@ -32,7 +32,7 @@ describe('Line API Integration Tests', () => {
         .send({ service_ids: [1, 2, 3] });
 
       expect(response.status).toBe(200);
-      expect(response.body.nextCustomerId).toBe("S3"+ "-" + 16); // Based on test data
+      expect(response.body.nextCustomerId).toStrictEqual({"serviceType": 3, "ticketNumber": 16}); // Based on test data
     },10000);
 
     it('Test 2: should return 400 if service_ids is not provided', async () => {
@@ -71,7 +71,7 @@ describe('Line API Integration Tests', () => {
         .send({ service_ids: [2, 3, 4] });
 
       expect(response.status).toBe(200);
-      expect(response.body.nextCustomerId).toBe("S4"+ "-" + 16); // Based on test data
+      expect(response.body.nextCustomerId).toStrictEqual({"serviceType": 4, "ticketNumber": 16}); // Based on test data
     });
 
     it('Test 7: should return 404 if no row is found for the given service_id', async () => {

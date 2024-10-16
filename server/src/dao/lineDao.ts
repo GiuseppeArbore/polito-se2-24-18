@@ -16,7 +16,7 @@ class LineDAO {
     }
   }
 
-  async getNextCustomer(service_ids: number[]): Promise<String> {
+  async getNextCustomer(service_ids: number[]): Promise<{ serviceType: number, ticketNumber: number }> {
 
     const placeholders = service_ids.map(() => '?').join(',');
   
@@ -40,7 +40,10 @@ class LineDAO {
   
     // Restituisci il nuovo valore di current_number + 1
     let nextCustomer = row.current_number + 1;
-    return "S"+row.id+ "-"+ nextCustomer;
+    return {
+      serviceType:  row.id,
+      ticketNumber: nextCustomer
+  };
   }
   
 

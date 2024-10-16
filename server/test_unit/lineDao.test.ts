@@ -50,7 +50,7 @@ describe('LineDAO', () => {
       (db.run as jest.Mock).mockResolvedValue(undefined);
 
       const result = await lineDAO.getNextCustomer([1, 2]);
-      expect(result).toBe('S1-6');
+      expect(result).toStrictEqual({"serviceType": 1, "ticketNumber": 6});
     });
 
     it('4 - should throw an error for invalid service IDs', async () => {
@@ -72,7 +72,7 @@ describe('LineDAO', () => {
       (db.run as jest.Mock).mockResolvedValue(undefined);
 
       const result = await lineDAO.getNextCustomer([1]);
-      expect(result).toBe('S1-4');
+      expect(result).toStrictEqual({"serviceType": 1, "ticketNumber": 4});
     });
 
     it('9 - should select the correct service based on queue length and service time', async () => {
@@ -81,7 +81,7 @@ describe('LineDAO', () => {
       (db.run as jest.Mock).mockResolvedValue(undefined);
 
       const result = await lineDAO.getNextCustomer([1, 2]);
-      expect(result).toBe('S2-3');
+      expect(result).toStrictEqual({"serviceType": 2, "ticketNumber": 3});
     });
 
     it('10 - should throw an error if db.get throws an error', async () => {
@@ -107,7 +107,7 @@ describe('LineDAO', () => {
       (db.run as jest.Mock).mockResolvedValue(undefined);
 
       const result = await lineDAO.getNextCustomer(serviceIds);
-      expect(result).toBe('S1-6');
+      expect(result).toStrictEqual({"serviceType": 1, "ticketNumber": 6});
     });
 
     it('13 - should return the next customer for services with the same queue length and service time', async () => {
@@ -116,7 +116,7 @@ describe('LineDAO', () => {
       (db.run as jest.Mock).mockResolvedValue(undefined);
 
       const result = await lineDAO.getNextCustomer([1, 2]);
-      expect(result).toBe('S1-6');
+      expect(result).toStrictEqual({"serviceType": 1, "ticketNumber": 6});
     });
 
     it('14 - should return the next customer for services with different queue lengths and same service time', async () => {
@@ -125,7 +125,7 @@ describe('LineDAO', () => {
       (db.run as jest.Mock).mockResolvedValue(undefined);
 
       const result = await lineDAO.getNextCustomer([1, 2]);
-      expect(result).toBe('S2-3');
+      expect(result).toStrictEqual({"serviceType": 2, "ticketNumber": 3});
     });
 
     it('15 - should return the next customer for services with same queue lengths and different service times', async () => {
@@ -134,7 +134,7 @@ describe('LineDAO', () => {
       (db.run as jest.Mock).mockResolvedValue(undefined);
 
       const result = await lineDAO.getNextCustomer([1, 2]);
-      expect(result).toBe('S1-6');
+      expect(result).toStrictEqual({"serviceType": 1, "ticketNumber": 6});
     });
   });
 });
