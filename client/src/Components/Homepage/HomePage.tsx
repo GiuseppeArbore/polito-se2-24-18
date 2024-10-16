@@ -25,7 +25,7 @@ function HomePage() {
                         <Card.Text>
                             Click here if you are a client and you want to get a ticket
                         </Card.Text>
-                        <Button variant="primary" onClick={() => navigate(`/counter`)}>Client</Button>
+                        <Button variant="primary" onClick={() => navigate(`/services`)}>Client</Button>
                     </Card.Body>
                 </Card>
 

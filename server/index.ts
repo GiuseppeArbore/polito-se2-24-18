@@ -13,8 +13,8 @@ const corsOptions = {
   origin: 'http://localhost:5173',
   credentials: true,
 };
-app.use(router);
 app.use(cors(corsOptions));
+app.use(router);
 
 initRoutes(router);
 registerErrorHandler(router);
