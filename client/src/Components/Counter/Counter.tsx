@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
+
 interface GetCounterProps {
     // Define the expected props here, for example:
     // someProp: string;
@@ -27,5 +28,7 @@ function GetCounter(props: GetCounterProps) {
         </div>
     );
 }
+
+
 
 export default GetCounter;
