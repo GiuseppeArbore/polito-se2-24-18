@@ -17,7 +17,7 @@ function GetTicket() {
             setProgress((prevProgress) => {
                 const newProgress = prevProgress + 5;
                 if (newProgress >= 100) {
-                 navigator('/');
+                 navigator('/services');
                 }
                 return newProgress;
             });
