@@ -12,8 +12,10 @@ function OfficeDesk() {
     const handleClose = () => setShowAlert(false);
 
     useEffect(() => {
-        // This effect will run every time ticket_number changes
+        // This effect will run every time ticket_number or service_type changes, but not on the initial render
+        if (ticket_number !== undefined) {
             handleShow();
+        }
     }, [ticket_number, service_type]);
 
     return (
@@ -22,7 +24,7 @@ function OfficeDesk() {
 
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 {showAlert ? (
-                    <Alert variant="success" onClose={handleClose} dismissible>
+                    <Alert variant="success" >
                         {service_type && ticket_number ? (
                             <>
                                 <Alert.Heading className="large-heading">Next Customer is {ticket_number} for service S-{service_type}</Alert.Heading>
