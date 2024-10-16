@@ -1,8 +1,10 @@
 import request from 'supertest';
 import { server } from '../index';
-import TicketDao from '../src/dao/ticketDao'; // Import the DAO
+import TicketDao from '../src/dao/ticketDao'; // Import the DA
+import db from '../src/db/db';
 
 const ticketDao = new TicketDao();
+
 
 // Function to reset counters for all services
 const resetServiceCounters = async () => {
@@ -11,8 +13,18 @@ const resetServiceCounters = async () => {
 
 describe('Ticket API Integration Tests', () => {
   beforeEach(async () => {
-    await resetServiceCounters(); // Reset counters before each test
+    
+    await db.run('CREATE TABLE IF NOT EXISTS services (id INTEGER PRIMARY KEY,description TEXT NOT NULL,queue_length INTEGER NOT NULL,current_number INTEGER NOT NULL,service_time INTEGER NOT NULL)');
+    await db.run('DELETE FROM services');
+    await db.run('INSERT INTO services (id, description, queue_length, current_number, service_time) VALUES (1,"servizio 1", 10, 5, 30)');
+    await db.run('INSERT INTO services (id, description, queue_length, current_number, service_time) VALUES (2,"servizio 2", 15, 10, 20)');
+    await db.run('INSERT INTO services (id, description, queue_length, current_number, service_time) VALUES (3,"servizio 3", 20, 15, 10)');
+    await db.run('INSERT INTO services (id, description, queue_length, current_number, service_time) VALUES (4,"servizio 4", 20, 15, 5)');
   });
+  
+  afterEach(async () => {
+    await db.run('CREATE TABLE IF NOT EXISTS services (id INTEGER PRIMARY KEY,description TEXT NOT NULL,queue_length INTEGER NOT NULL,current_number INTEGER NOT NULL,service_time INTEGER NOT NULL)');
+  })
 
   // Test to check if the API returns a ticket for a given service_id
   it('1 - should return ticket for a given service_id', async () => {
@@ -21,7 +33,7 @@ describe('Ticket API Integration Tests', () => {
     const response = await request(server).get(`/api/tickets/${serviceId}`);
 
     expect(response.status).toBe(200);
-    expect(response.body).toBe("S3-1");
+    expect(response.body).toBe("S3-21");
   });
 
   // Test to check if the API returns 400 when service_id is not provided
@@ -47,12 +59,12 @@ describe('Ticket API Integration Tests', () => {
     // First request
     let response = await request(server).get(`/api/tickets/${serviceId}`);
     expect(response.status).toBe(200);
-    expect(response.body).toBe("S"+serviceId + "-" + 1);
+    expect(response.body).toBe("S"+serviceId + "-" + 21);
 
     // Second request
     response = await request(server).get(`/api/tickets/${serviceId}`);
     expect(response.status).toBe(200);
-    expect(response.body).toBe("S"+serviceId + "-" + 2);
+    expect(response.body).toBe("S"+serviceId + "-" + 22);
   });
 
   // Test to check if the API returns 404 for a non-existent service_id
@@ -96,12 +108,12 @@ describe('Ticket API Integration Tests', () => {
     // Verify counters for the first service
     let response = await request(server).get(`/api/tickets/${serviceId1}`);
     expect(response.status).toBe(200);
-    expect(response.body).toBe("S"+ serviceId1 + "-" + 3);
+    expect(response.body).toBe("S"+ serviceId1 + "-" + 23);
 
     // Verify counters for the second service
     response = await request(server).get(`/api/tickets/${serviceId2}`);
     expect(response.status).toBe(200);
-    expect(response.body).toBe("S"+serviceId2+ "-" + 2);
+    expect(response.body).toBe("S"+serviceId2+ "-" + 22);
   });
 
   // Test to check if the API returns 200 and correct ticket number after reset
@@ -149,7 +161,7 @@ describe('Ticket API Integration Tests', () => {
     // Verify final ticket number
     const finalResponse = await request(server).get(`/api/tickets/${serviceId}`);
     expect(finalResponse.status).toBe(200);
-    expect(finalResponse.body).toBe("S"+ serviceId + "-" + 4);
+    expect(finalResponse.body).toBe("S"+ serviceId + "-" + 24);
   });
 
   // Test to check if the API returns 200 and correct ticket number for different services
@@ -167,12 +179,12 @@ describe('Ticket API Integration Tests', () => {
     // Verify counters for the first service
     let response = await request(server).get(`/api/tickets/${serviceId1}`);
     expect(response.status).toBe(200);
-    expect(response.body).toBe("S"+serviceId1 + "-" + 3);
+    expect(response.body).toBe("S"+serviceId1 + "-" + 23);
 
     // Verify counters for the second service
     response = await request(server).get(`/api/tickets/${serviceId2}`);
     expect(response.status).toBe(200);
-    expect(response.body).toBe("S"+serviceId2 + "-" + 2);
+    expect(response.body).toBe("S"+serviceId2 + "-" + 22);
   });
 
   // Test to check if the API returns 200 and correct ticket number after multiple resets
@@ -283,11 +295,11 @@ describe('Ticket API Integration Tests', () => {
     // Verify final ticket number for the first service
     let finalResponse = await request(server).get(`/api/tickets/${serviceId1}`);
     expect(finalResponse.status).toBe(200);
-    expect(finalResponse.body).toBe("S"+serviceId1 + "-" + 4);
+    expect(finalResponse.body).toBe("S"+serviceId1 + "-" + 24);
 
     // Verify final ticket number for the second service
     finalResponse = await request(server).get(`/api/tickets/${serviceId2}`);
     expect(finalResponse.status).toBe(200);
-    expect(finalResponse.body).toBe("S"+ serviceId2 + "-" + 4);
+    expect(finalResponse.body).toBe("S"+ serviceId2 + "-" + 24);
   });
 });
