@@ -45,7 +45,7 @@ function OfficeDesk() {
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '3rem', justifyContent: 'space-around' }}>
                             <Button variant="primary" onClick={async () => {
                                 try {
-                                    const response = await API.getNextCustomer();
+                                    const response = await API.getNextCustomer(Number(number));
                                     console.log(response);
                                     if (response) {
                                         if (response.ticketNumber == 0) {

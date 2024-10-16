@@ -1,18 +1,20 @@
 import React from 'react'
 import { useEffect, useState } from "react"
 import { Button, Card } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
 
 function SeeCounter() {
 
     const [counter, setCounter] = useState<string>(""); // this value will be updated
     const [error, setError] = useState<string>("");
     const [ticketId, setTicketId] = useState<number>(1);
+    const { service_type, ticket_number } = useParams<{ service_type: string, ticket_number: string }>();
     
 
     useEffect(() => {
         
-        const server_url='ws://localhost:3001/tickets/notification/';
-        const ws = new WebSocket(server_url + ticketId);
+        const server_url='http://localhost:3001/api/tickets/notification';
+        const ws = new WebSocket(`${server_url}/${service_type}/${ticket_number}`);
 
         ws.onmessage = (event) => {
             const counter_ = event.data;
