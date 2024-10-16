@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { app } from '../index';
+import { server } from '../index';
 import TicketDao from '../src/dao/ticketDao'; // Import the DAO
 
 const ticketDao = new TicketDao();
@@ -18,7 +18,7 @@ describe('Ticket API Integration Tests', () => {
   it('1 - should return ticket for a given service_id', async () => {
     const serviceId = 3;
 
-    const response = await request(app).get(`/api/tickets/${serviceId}`);
+    const response = await request(server).get(`/api/tickets/${serviceId}`);
 
     expect(response.status).toBe(200);
     expect(response.body).toBe("S3-1");
@@ -26,7 +26,7 @@ describe('Ticket API Integration Tests', () => {
 
   // Test to check if the API returns 400 when service_id is not provided
   it('2 - should return 400 if service_id is not provided', async () => {
-    const response = await request(app).get('/api/tickets/');
+    const response = await request(server).get('/api/tickets/');
 
     expect(response.status).toBe(404);
   });
@@ -35,7 +35,7 @@ describe('Ticket API Integration Tests', () => {
   it('3 - should return 400 if there is an invalid parameter', async () => {
     const invalidServiceId = 'invalid';
 
-    const response = await request(app).get(`/api/tickets/${invalidServiceId}`);
+    const response = await request(server).get(`/api/tickets/${invalidServiceId}`);
 
     expect(response.status).toBe(400);
   });
@@ -45,12 +45,12 @@ describe('Ticket API Integration Tests', () => {
     const serviceId = 3;
 
     // First request
-    let response = await request(app).get(`/api/tickets/${serviceId}`);
+    let response = await request(server).get(`/api/tickets/${serviceId}`);
     expect(response.status).toBe(200);
     expect(response.body).toBe("S"+serviceId + "-" + 1);
 
     // Second request
-    response = await request(app).get(`/api/tickets/${serviceId}`);
+    response = await request(server).get(`/api/tickets/${serviceId}`);
     expect(response.status).toBe(200);
     expect(response.body).toBe("S"+serviceId + "-" + 2);
   });
@@ -59,7 +59,7 @@ describe('Ticket API Integration Tests', () => {
   it('5 - should return 404 for a non-existent service_id', async () => {
     const nonExistentServiceId = 999;
 
-    const response = await request(app).get(`/api/tickets/${nonExistentServiceId}`);
+    const response = await request(server).get(`/api/tickets/${nonExistentServiceId}`);
 
     expect(response.status).toBe(404);
   });
@@ -69,14 +69,14 @@ describe('Ticket API Integration Tests', () => {
     const serviceId = 3;
 
     // Increment counters
-    await request(app).get(`/api/tickets/${serviceId}`);
-    await request(app).get(`/api/tickets/${serviceId}`);
+    await request(server).get(`/api/tickets/${serviceId}`);
+    await request(server).get(`/api/tickets/${serviceId}`);
 
     // Reset counters
     await resetServiceCounters();
 
     // Verify counters are reset
-    const response = await request(app).get(`/api/tickets/${serviceId}`);
+    const response = await request(server).get(`/api/tickets/${serviceId}`);
     expect(response.status).toBe(200);
     expect(response.body).toBe("S"+serviceId + "-" + 1);
   });
@@ -87,19 +87,19 @@ describe('Ticket API Integration Tests', () => {
     const serviceId2 = 4;
 
     // Increment counters for the first service
-    await request(app).get(`/api/tickets/${serviceId1}`);
-    await request(app).get(`/api/tickets/${serviceId1}`);
+    await request(server).get(`/api/tickets/${serviceId1}`);
+    await request(server).get(`/api/tickets/${serviceId1}`);
 
     // Increment counters for the second service
-    await request(app).get(`/api/tickets/${serviceId2}`);
+    await request(server).get(`/api/tickets/${serviceId2}`);
 
     // Verify counters for the first service
-    let response = await request(app).get(`/api/tickets/${serviceId1}`);
+    let response = await request(server).get(`/api/tickets/${serviceId1}`);
     expect(response.status).toBe(200);
     expect(response.body).toBe("S"+ serviceId1 + "-" + 3);
 
     // Verify counters for the second service
-    response = await request(app).get(`/api/tickets/${serviceId2}`);
+    response = await request(server).get(`/api/tickets/${serviceId2}`);
     expect(response.status).toBe(200);
     expect(response.body).toBe("S"+serviceId2+ "-" + 2);
   });
@@ -109,14 +109,14 @@ describe('Ticket API Integration Tests', () => {
     const serviceId = 3;
 
     // Increment counters
-    await request(app).get(`/api/tickets/${serviceId}`);
-    await request(app).get(`/api/tickets/${serviceId}`);
+    await request(server).get(`/api/tickets/${serviceId}`);
+    await request(server).get(`/api/tickets/${serviceId}`);
 
     // Reset counters
     await resetServiceCounters();
 
     // Verify counters are reset
-    const response = await request(app).get(`/api/tickets/${serviceId}`);
+    const response = await request(server).get(`/api/tickets/${serviceId}`);
     expect(response.status).toBe(200);
     expect(response.body).toBe("S"+serviceId + "-" + 1);
   });
@@ -125,7 +125,7 @@ describe('Ticket API Integration Tests', () => {
   it('9 - should not increment counters for invalid service_id', async () => {
     const invalidServiceId = 'invalid';
 
-    const response = await request(app).get(`/api/tickets/${invalidServiceId}`);
+    const response = await request(server).get(`/api/tickets/${invalidServiceId}`);
     expect(response.status).toBe(400);
   });
 
@@ -135,9 +135,9 @@ describe('Ticket API Integration Tests', () => {
 
     // Perform concurrent requests
     const promises = [
-      request(app).get(`/api/tickets/${serviceId}`),
-      request(app).get(`/api/tickets/${serviceId}`),
-      request(app).get(`/api/tickets/${serviceId}`)
+      request(server).get(`/api/tickets/${serviceId}`),
+      request(server).get(`/api/tickets/${serviceId}`),
+      request(server).get(`/api/tickets/${serviceId}`)
     ];
 
     const responses = await Promise.all(promises);
@@ -147,7 +147,7 @@ describe('Ticket API Integration Tests', () => {
     });
 
     // Verify final ticket number
-    const finalResponse = await request(app).get(`/api/tickets/${serviceId}`);
+    const finalResponse = await request(server).get(`/api/tickets/${serviceId}`);
     expect(finalResponse.status).toBe(200);
     expect(finalResponse.body).toBe("S"+ serviceId + "-" + 4);
   });
@@ -158,19 +158,19 @@ describe('Ticket API Integration Tests', () => {
     const serviceId2 = 4;
 
     // Increment counters for the first service
-    await request(app).get(`/api/tickets/${serviceId1}`);
-    await request(app).get(`/api/tickets/${serviceId1}`);
+    await request(server).get(`/api/tickets/${serviceId1}`);
+    await request(server).get(`/api/tickets/${serviceId1}`);
 
     // Increment counters for the second service
-    await request(app).get(`/api/tickets/${serviceId2}`);
+    await request(server).get(`/api/tickets/${serviceId2}`);
 
     // Verify counters for the first service
-    let response = await request(app).get(`/api/tickets/${serviceId1}`);
+    let response = await request(server).get(`/api/tickets/${serviceId1}`);
     expect(response.status).toBe(200);
     expect(response.body).toBe("S"+serviceId1 + "-" + 3);
 
     // Verify counters for the second service
-    response = await request(app).get(`/api/tickets/${serviceId2}`);
+    response = await request(server).get(`/api/tickets/${serviceId2}`);
     expect(response.status).toBe(200);
     expect(response.body).toBe("S"+serviceId2 + "-" + 2);
   });
@@ -180,18 +180,18 @@ describe('Ticket API Integration Tests', () => {
     const serviceId = 3;
 
     // Increment counters
-    await request(app).get(`/api/tickets/${serviceId}`);
-    await request(app).get(`/api/tickets/${serviceId}`);
+    await request(server).get(`/api/tickets/${serviceId}`);
+    await request(server).get(`/api/tickets/${serviceId}`);
 
     // Reset counters
     await resetServiceCounters();
 
     // Increment counters again
-    await request(app).get(`/api/tickets/${serviceId}`);
-    await request(app).get(`/api/tickets/${serviceId}`);
+    await request(server).get(`/api/tickets/${serviceId}`);
+    await request(server).get(`/api/tickets/${serviceId}`);
 
     // Verify final ticket number
-    const response = await request(app).get(`/api/tickets/${serviceId}`);
+    const response = await request(server).get(`/api/tickets/${serviceId}`);
     expect(response.status).toBe(200);
     expect(response.body).toBe("S"+ serviceId + "-" + 3);
   });
@@ -202,19 +202,19 @@ describe('Ticket API Integration Tests', () => {
     const serviceId2 = 4;
 
     // Increment counters for both services
-    await request(app).get(`/api/tickets/${serviceId1}`);
-    await request(app).get(`/api/tickets/${serviceId2}`);
+    await request(server).get(`/api/tickets/${serviceId1}`);
+    await request(server).get(`/api/tickets/${serviceId2}`);
 
     // Reset counters
     await resetServiceCounters();
 
     // Verify counters for the first service
-    let response = await request(app).get(`/api/tickets/${serviceId1}`);
+    let response = await request(server).get(`/api/tickets/${serviceId1}`);
     expect(response.status).toBe(200);
     expect(response.body).toBe("S"+serviceId1 + "-" + 1);
 
     // Verify counters for the second service
-    response = await request(app).get(`/api/tickets/${serviceId2}`);
+    response = await request(server).get(`/api/tickets/${serviceId2}`);
     expect(response.status).toBe(200);
     expect(response.body).toBe("S"+serviceId2 + "-" + 1);
   });
@@ -224,17 +224,17 @@ describe('Ticket API Integration Tests', () => {
     const serviceId = 3;
 
     // Increment counters
-    await request(app).get(`/api/tickets/${serviceId}`);
-    await request(app).get(`/api/tickets/${serviceId}`);
+    await request(server).get(`/api/tickets/${serviceId}`);
+    await request(server).get(`/api/tickets/${serviceId}`);
 
     // Reset counters
     await resetServiceCounters();
 
     // Perform concurrent requests
     const promises = [
-      request(app).get(`/api/tickets/${serviceId}`),
-      request(app).get(`/api/tickets/${serviceId}`),
-      request(app).get(`/api/tickets/${serviceId}`)
+      request(server).get(`/api/tickets/${serviceId}`),
+      request(server).get(`/api/tickets/${serviceId}`),
+      request(server).get(`/api/tickets/${serviceId}`)
     ];
 
     const responses = await Promise.all(promises);
@@ -244,7 +244,7 @@ describe('Ticket API Integration Tests', () => {
     });
 
     // Verify final ticket number
-    const finalResponse = await request(app).get(`/api/tickets/${serviceId}`);
+    const finalResponse = await request(server).get(`/api/tickets/${serviceId}`);
     expect(finalResponse.status).toBe(200);
     expect(finalResponse.body).toBe("S"+serviceId + "-" + 4);
   });
@@ -256,9 +256,9 @@ describe('Ticket API Integration Tests', () => {
 
     // Perform concurrent requests for the first service
     const promises1 = [
-      request(app).get(`/api/tickets/${serviceId1}`),
-      request(app).get(`/api/tickets/${serviceId1}`),
-      request(app).get(`/api/tickets/${serviceId1}`)
+      request(server).get(`/api/tickets/${serviceId1}`),
+      request(server).get(`/api/tickets/${serviceId1}`),
+      request(server).get(`/api/tickets/${serviceId1}`)
     ];
 
     const responses1 = await Promise.all(promises1);
@@ -269,9 +269,9 @@ describe('Ticket API Integration Tests', () => {
 
     // Perform concurrent requests for the second service
     const promises2 = [
-      request(app).get(`/api/tickets/${serviceId2}`),
-      request(app).get(`/api/tickets/${serviceId2}`),
-      request(app).get(`/api/tickets/${serviceId2}`)
+      request(server).get(`/api/tickets/${serviceId2}`),
+      request(server).get(`/api/tickets/${serviceId2}`),
+      request(server).get(`/api/tickets/${serviceId2}`)
     ];
 
     const responses2 = await Promise.all(promises2);
@@ -281,12 +281,12 @@ describe('Ticket API Integration Tests', () => {
     });
 
     // Verify final ticket number for the first service
-    let finalResponse = await request(app).get(`/api/tickets/${serviceId1}`);
+    let finalResponse = await request(server).get(`/api/tickets/${serviceId1}`);
     expect(finalResponse.status).toBe(200);
     expect(finalResponse.body).toBe("S"+serviceId1 + "-" + 4);
 
     // Verify final ticket number for the second service
-    finalResponse = await request(app).get(`/api/tickets/${serviceId2}`);
+    finalResponse = await request(server).get(`/api/tickets/${serviceId2}`);
     expect(finalResponse.status).toBe(200);
     expect(finalResponse.body).toBe("S"+ serviceId2 + "-" + 4);
   });

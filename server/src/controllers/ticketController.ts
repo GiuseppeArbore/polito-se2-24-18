@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import TicketDAO from '../dao/ticketDao';
+import notificationController from './notificationController';
 
 class TicketController {
     private dao: TicketDAO;
@@ -17,8 +18,9 @@ class TicketController {
         }
 
         try {
-            const tickets = await this.dao.getTicket(Number(service_id));
-            res.status(200).json("S"+ service_id + "-" + tickets);
+            const ticket = await this.dao.getTicket(Number(service_id));
+            notificationController.addTicket(ticket)
+            res.status(200).json("S"+ service_id + "-" + ticket);
         } catch (error) {
             const status = (error as any).status || 500;
             res.status(status).json({ message: (error as Error).message });
@@ -29,6 +31,7 @@ class TicketController {
        
         try {
           await this.dao.resetServiceCounters();
+          notificationController.removeAll();
           res.status(200).json({ message: 'Service counters reset successfully' });
         } catch (error) {
             const status = (error as any).status || 500;
