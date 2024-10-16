@@ -14,7 +14,7 @@ function SeeCounter() {
     useEffect(() => {
         
         const server_url='http://localhost:3001/api/tickets/notification';
-        const ws = new WebSocket(`${server_url}/${service_type}/${ticket_number}`);
+        const ws = new WebSocket(`${server_url}/${service_type}/${ticket_number}/`);
 
         ws.onmessage = (event) => {
             const counter_ = event.data;
@@ -25,11 +25,6 @@ function SeeCounter() {
         ws.onerror = (err) => {
             console.log("WebSocket error:", err);
             setError("Failed to connect to the server.");
-        };
-
-        // Clean up WebSocket connection when the component is unmounted
-        return () => {
-            ws.close();
         };
     }, []);
     return (
