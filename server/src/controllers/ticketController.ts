@@ -19,7 +19,7 @@ class TicketController {
 
         try {
             const ticket = await this.dao.getTicket(Number(service_id));
-            notificationController.addTicket(ticket)
+            notificationController.addTicket(Number(service_id), ticket)
             res.status(200).json("S"+ service_id + "-" + ticket);
         } catch (error) {
             const status = (error as any).status || 500;

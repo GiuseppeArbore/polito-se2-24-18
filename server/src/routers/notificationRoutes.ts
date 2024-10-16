@@ -5,20 +5,22 @@ import { validateWsRequest } from "../errorHandlers";
 
 const router = new Router()
 
-router.ws("/tickets/notification/:ticketId", [
-        param("ticketId").exists().isInt({min: 0})
+router.ws("/tickets/notification/:serviceType/:ticketId", [
+        param("ticketId").exists().isInt({min: 0}),
+        param("serviceType").exists().isInt({min: 0})
     ],
     validateWsRequest,
     async (req: any, res: WSResponse) => {
         const ticketId = Number(req.params.ticketId);
-        if (!notificationController.hasTicket(ticketId)) {
+        const serviceType = Number(req.params.serviceType);
+        if (!notificationController.hasTicket(serviceType, ticketId)) {
             return res.status(422);
         }
 
         const ws = await res.accept();
-        notificationController.addConnection(ticketId, ws)
+        notificationController.addConnection(serviceType, ticketId, ws)
         ws.on('close', () => {
-            notificationController.removeConnection(ticketId);
+            notificationController.removeConnection(serviceType, ticketId);
         });
     }
 );
