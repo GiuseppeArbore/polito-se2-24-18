@@ -48,11 +48,11 @@ function OfficeDesk() {
                                     const response = await API.getNextCustomer();
                                     console.log(response);
                                     if (response) {
-                                        if(response.ticketNumber==0){
+                                        if (response.ticketNumber == 0) {
                                             setTicketNumber(undefined);
                                             setServiceType(undefined);
                                             handleShow();
-                                        }else{
+                                        } else {
                                             setTicketNumber(response.ticketNumber);
                                             setServiceType(response.serviceType);
                                         }
