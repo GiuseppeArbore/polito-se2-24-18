@@ -7,6 +7,7 @@ import { Route, Routes, useRoutes} from 'react-router-dom';
 import GetCounter from './Components/Counter/Counter';
 import React from 'react';
 import GetTicket from './Components/Client/Ticket';
+import HomePage from './Components/Homepage/HomePage';
 
 
 
@@ -17,7 +18,8 @@ function App(): JSX.Element {
     <>
      
       <Routes>
-          <Route path="/" element={ <GetServices /> }/> 
+          <Route path="/" element={ <HomePage /> }/> 
+          <Route path="/services" element={ <GetServices /> }/>
           <Route path="/counter" element={ <GetCounter total_counter={9}/> }/> 
         
           <Route path='/ticket/:service_type/:ticket_number' element={ <GetTicket /> } />
