@@ -10,7 +10,7 @@ const router = new Router();
 const port: number = 3001;
 
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: '*',
   credentials: true,
 };
 app.use(cors(corsOptions));
