@@ -14,26 +14,6 @@ const getTicket = async (service_id:number) => {
   return data;
   }
 
-<<<<<<< HEAD
-  
-  const getAllServices = async () => {
-   
-    const response = await fetch(`${SERVER_URL}/api/services`);
-    if (response.ok) {
-        const services = await response.json()
-        return services;
-    } else {
-        const errDetail = await response.json();
-        if (errDetail.error)
-            throw errDetail.error
-        if (errDetail.message)
-            throw errDetail.message
-        throw new Error("Error. Please reload the page")
-    }
-}
-
-const API ={ getTicket, getAllServices };
-=======
   const getNextCustomer = async (service_ids: number[]) => {
     const response = await fetch(`${SERVER_URL}/api/line/next-customer`, {
       method: 'POST',
@@ -50,5 +30,4 @@ const API ={ getTicket, getAllServices };
   };
   
 const API ={getTicket,getNextCustomer};
->>>>>>> 95b71e1 (changes and fix)
 export default API;

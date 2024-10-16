@@ -1,4 +1,5 @@
 const cors = require('cors');
+const express = require('express');
 import initRoutes from './src/routes';
 import db from './src/db/db'
 import { WebSocketExpress, Router } from 'websocket-express';
@@ -15,7 +16,7 @@ const corsOptions = {
 };
 app.use(router);
 app.use(cors(corsOptions));
-app.use(express.json());
+router.use(express.json());
 
 initRoutes(router);
 registerErrorHandler(router);

@@ -1,12 +1,7 @@
 import request from 'supertest';
-<<<<<<< HEAD
 import { server } from '../index';
-import TicketDao from '../src/dao/ticketDao'; // Import the DAO
-=======
-import { app } from '../index';
 import TicketDao from '../src/dao/ticketDao'; // Import the DA
 import db from '../src/db/db';
->>>>>>> 654ece7 (unit tests)
 
 const ticketDao = new TicketDao();
 
