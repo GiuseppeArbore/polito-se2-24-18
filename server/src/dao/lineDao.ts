@@ -20,7 +20,7 @@ class LineDAO {
 
     const placeholders = service_ids.map(() => '?').join(',');
   
-    const selectQuery = `SELECT id, current_number FROM services WHERE id IN (${placeholders}) ORDER BY (queue_length - current_number) DESC, service_time ASC LIMIT 1`;
+    const selectQuery = `SELECT id, current_number,queue_length FROM services WHERE id IN (${placeholders}) ORDER BY (queue_length - current_number) DESC, service_time ASC LIMIT 1`;
   
     const updateQuery = 'UPDATE services SET current_number = current_number + 1 WHERE id = ?';
   
@@ -29,6 +29,13 @@ class LineDAO {
   
     // Esegui la query per ottenere il servizio con il prossimo cliente
     const row = await db.get(selectQuery, [...service_ids]);
+
+    if(row.current_number >= row.queue_length){
+      return {
+        serviceType:  row.id,
+        ticketNumber: 0
+    };
+    }
   
     // Controlla che sia stato trovato un servizio
     if (!row) {

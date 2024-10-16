@@ -29,7 +29,7 @@ describe('Line API Integration Tests', () => {
 
       const response = await request(server)
         .post('/api/line/next-customer')
-        .send({ service_ids: [1, 2, 3] });
+        .send({ service_ids: [1,2,3] });
 
       expect(response.status).toBe(200);
       expect(response.body.nextCustomerId).toStrictEqual({"serviceType": 3, "ticketNumber": 16}); // Based on test data
