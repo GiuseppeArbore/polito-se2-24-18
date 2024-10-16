@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useContext } from 'react';
-import API from '../../api'; // Adjust the import path according to your project structure
-import { Alert, Button, Container, Row, Spinner } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import API from '../../API'; // Adjust the import path according to your project structure
+import { Alert, Button } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
 function OfficeDesk() {
