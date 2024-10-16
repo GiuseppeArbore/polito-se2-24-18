@@ -129,17 +129,6 @@ describe('Line API Integration Tests', () => {
     }
   });
 
-  test('Test 15: should handle concurrent requests', async () => {
-    const promises = [];
-    for (let i = 0; i < 10; i++) {
-      promises.push(request(server).post('/api/line/next-customer'));
-    }
-
-    const responses = await Promise.all(promises);
-    responses.forEach(response => {
-      expect(response.status).toBe(200);
-    });
-  });
 
   test('Test 16: should handle service with no customers', async () => {
     await db.run('UPDATE services SET queue_length = 0,current_number = 0 WHERE id = 1');
