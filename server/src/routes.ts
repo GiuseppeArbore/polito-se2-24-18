@@ -1,13 +1,16 @@
-import { Application } from "express";
+import { Router } from "websocket-express";
 import ticketRoutes from './routers/ticketRoutes';
-import { app } from '../index';
 import serviceRoutes from "./routers/serviceRoutes";
+import wsRoutes from './routers/notificationRoutes';
 
+function initRoutes(app: Router) {
+    app.get("/queue/number", async (req, res) => {
+        res.status(200).json({ ok: "ok" });
+    });
 
-function initRoutes(app: Application) {
-   
     app.use('/api', ticketRoutes);
     app.use('/api', serviceRoutes);
+    app.use('/api', wsRoutes);
 }
 
 export default initRoutes
