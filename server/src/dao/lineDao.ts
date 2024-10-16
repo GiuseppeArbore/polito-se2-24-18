@@ -30,16 +30,19 @@ class LineDAO {
     // Esegui la query per ottenere il servizio con il prossimo cliente
     const row = await db.get(selectQuery, [...service_ids]);
 
+   
+  
+    // Controlla che sia stato trovato un servizio
+    if (!row) {
+      throw new Error('No service found for the provided service IDs');
+    }
+
+
     if(row.current_number >= row.queue_length){
       return {
         serviceType:  row.id,
         ticketNumber: 0
     };
-    }
-  
-    // Controlla che sia stato trovato un servizio
-    if (!row) {
-      throw new Error('No service found for the provided service IDs');
     }
   
     // Aggiorna il numero corrente del servizio selezionato
