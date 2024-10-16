@@ -1,24 +1,24 @@
 import { WebSocket } from 'ws';
 
 class NotificationController {
-    private active: Map<number, WebSocket | null>;
+    private active: Map<string, WebSocket | null>;
 
     constructor() {
         this.active = new Map();
     }
 
-    hasTicket(ticketNumber: number): boolean {
-        return this.active.has(ticketNumber);
+    hasTicket(serviceType: number, ticketNumber: number): boolean {
+        return this.active.has(`${serviceType}-${ticketNumber}`);
     }
 
     /**
      * To be called when delivering the ticket number to the customer.
      * @returns `false` if the ticket already exists, `true` otherwise
      */
-    addTicket(ticketNumber: number): boolean {
-        if (this.hasTicket(ticketNumber))
+    addTicket(serviceType: number, ticketNumber: number): boolean {
+        if (this.hasTicket(serviceType, ticketNumber))
             return false;
-        this.active.set(ticketNumber, null);
+        this.active.set(`${serviceType}-${ticketNumber}`, null);
         return true;
     }
 
@@ -27,11 +27,11 @@ class NotificationController {
      * If a connection already exists, it is overridden.
      * @returns `false` if the ticket does not exist, `true` otherwise
      */
-    addConnection(ticketNumber: number, ws: WebSocket): boolean {
-        if (!this.removeConnection(ticketNumber))
+    addConnection(serviceType: number, ticketNumber: number, ws: WebSocket): boolean {
+        if (!this.removeConnection(serviceType, ticketNumber))
             return false;
 
-        this.active.set(ticketNumber, ws);
+        this.active.set(`${serviceType}-${ticketNumber}`, ws);
         return true;
     }
 
@@ -39,11 +39,11 @@ class NotificationController {
      * Removes a ticket from the active tickets. To be called when an user has been served.
      * @returns `false` if the ticket does not exist, `true` otherwise
      */
-    removeTicket(ticketNumber: number): boolean {
-        if (!this.removeConnection(ticketNumber))
+    removeTicket(serviceType: number, ticketNumber: number): boolean {
+        if (!this.removeConnection(serviceType, ticketNumber))
             return false;
 
-        return this.active.delete(ticketNumber);
+        return this.active.delete(`${serviceType}-${ticketNumber}`);
     }
 
     /**
@@ -51,15 +51,15 @@ class NotificationController {
      * To be called in case the connection is interrupted.
      * @returns `false` if the ticket does not exist, `true` otherwise
      */
-    removeConnection(ticketNumber: number): boolean {
-        const curr = this.active.get(ticketNumber);
+    removeConnection(serviceType: number, ticketNumber: number): boolean {
+        const curr = this.active.get(`${serviceType}-${ticketNumber}`);
         if (curr === undefined)
             return false;
         if (curr && curr.readyState !== curr.CLOSED && curr.readyState !== curr.CLOSING) {
             curr.close();
         }
 
-        this.active.set(ticketNumber, null);
+        this.active.set(`${serviceType}-${ticketNumber}`, null);
         return true;
     }
 
@@ -67,8 +67,8 @@ class NotificationController {
      * Notifies the user corresponding to the `ticketNumber`
      * @returns `false` if the ticket does not exist, `true` otherwise
      */
-    notify(ticketNumber: number, counter: number): boolean {
-        const ws = this.active.get(ticketNumber);
+    notify(serviceType: number, ticketNumber: number, counter: number): boolean {
+        const ws = this.active.get(`${serviceType}-${ticketNumber}`);
         if(!ws)
             return false;
 
