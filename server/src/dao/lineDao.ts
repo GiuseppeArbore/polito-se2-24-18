@@ -12,14 +12,9 @@ class LineDAO {
   
     const updateQuery = 'UPDATE services SET current_number = current_number + 1 WHERE id = ?';
   
-   
-  
     
     const row = await db.get(selectQuery,[]);
 
-   
-  
-   
     if (!row) {
       throw new Error('No service found for the provided service IDs');
     }
