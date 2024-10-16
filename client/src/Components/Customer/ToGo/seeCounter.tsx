@@ -6,22 +6,30 @@ function SeeCounter() {
 
     const [counter, setCounter] = useState<string>(""); // this value will be updated
     const [error, setError] = useState<string>("");
-
+    const [ticketId, setTicketId] = useState<number>(1);
+    
 
     useEffect(() => {
-        const getCounter = async () => {
-            try {
-                //const counter = await API.listenTotheCounterAnnouncement();
-                setCounter(counter);
-                setError("");
-            } catch (error: any) {
-                console.log("Error fetching counter number: ", error);
-                setError(error.error || error.message || "An error occurred");
-            }
-        };
-        getCounter();
-    }, []);
+        
+        const server_url='ws://localhost:3001/tickets/notification/';
+        const ws = new WebSocket(server_url + ticketId);
 
+        ws.onmessage = (event) => {
+            const counter_ = event.data;
+            setCounter(counter_);
+            console.log("Message received:", counter_);
+        };
+
+        ws.onerror = (err) => {
+            console.log("WebSocket error:", err);
+            setError("Failed to connect to the server.");
+        };
+
+        // Clean up WebSocket connection when the component is unmounted
+        return () => {
+            ws.close();
+        };
+    }, []);
     return (
         <>
 
