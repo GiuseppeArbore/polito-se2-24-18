@@ -15,7 +15,7 @@ function HomePage() {
                         <Card.Text>
                             Click here if you are an officer and you want to select your counter
                         </Card.Text>
-                        <Button variant="primary" onClick={() => navigate(`/counter`)}>I'm an Officer</Button>
+                        <Button variant="primary" onClick={() => navigate(`/counter`)}>Officer</Button>
                     </Card.Body>
                 </Card>
 
@@ -25,7 +25,7 @@ function HomePage() {
                         <Card.Text>
                             Click here if you are a client and you want to get a ticket
                         </Card.Text>
-                        <Button variant="primary" onClick={() => navigate(`/counter`)}>I'm a Client</Button>
+                        <Button variant="primary" onClick={() => navigate(`/counter`)}>Client</Button>
                     </Card.Body>
                 </Card>
 
