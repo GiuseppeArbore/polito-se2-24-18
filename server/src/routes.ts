@@ -1,6 +1,7 @@
 import { Router } from "websocket-express";
 import ticketRoutes from './routers/ticketRoutes';
 import serviceRoutes from "./routers/serviceRoutes";
+import lineRoutes from './routers/lineRoutes';
 import wsRoutes from './routers/notificationRoutes';
 
 function initRoutes(app: Router) {
@@ -11,6 +12,7 @@ function initRoutes(app: Router) {
     app.use('/api', ticketRoutes);
     app.use('/api', serviceRoutes);
     app.use('/api', wsRoutes);
+    app.use('/api', lineRoutes);
 }
 
 export default initRoutes
