@@ -1,19 +1,28 @@
-import React from 'react'
+import React, { useMemo, useRef } from 'react'
 import { useEffect, useState } from "react"
 import { Button, Card } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
 
 function SeeCounter() {
 
     const [counter, setCounter] = useState<string>(""); // this value will be updated
     const [error, setError] = useState<string>("");
     const [ticketId, setTicketId] = useState<number>(1);
-    
+    const { service_type, ticket_number } = useParams<{ service_type: string, ticket_number: string }>();
+    const once  = useRef(false);
 
     useEffect(() => {
-        
-        const server_url='ws://localhost:3001/tickets/notification/';
-        const ws = new WebSocket(server_url + ticketId);
-
+        if(once.current)
+             return;
+        once.current = true;
+        const server_url='ws://localhost:3001/api/tickets/notification';
+        const ws = new WebSocket(`${server_url}/${service_type}/${ticket_number}/`);
+        ws.onopen = () => {
+            console.log("WebSocket connected");
+        };
+        ws.onclose = (err) => {
+            console.log("WebSocket closed: ", err);
+        };
         ws.onmessage = (event) => {
             const counter_ = event.data;
             setCounter(counter_);
@@ -23,11 +32,6 @@ function SeeCounter() {
         ws.onerror = (err) => {
             console.log("WebSocket error:", err);
             setError("Failed to connect to the server.");
-        };
-
-        // Clean up WebSocket connection when the component is unmounted
-        return () => {
-            ws.close();
         };
     }, []);
     return (

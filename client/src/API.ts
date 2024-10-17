@@ -14,8 +14,8 @@ const getTicket = async (service_id:number) => {
   return data;
   }
 
-  const getNextCustomer = async () => {
-    const response = await fetch(`${SERVER_URL}/api/line/next-customer`, {
+  const getNextCustomer = async (counter: number) => {
+    const response = await fetch(`${SERVER_URL}/api/line/next-customer/${counter}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

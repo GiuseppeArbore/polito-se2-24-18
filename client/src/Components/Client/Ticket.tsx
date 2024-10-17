@@ -5,7 +5,8 @@ import { useParams } from 'react-router-dom';
 import QRCode from "qrcode";
 import { useNavigate } from 'react-router-dom';
 function GetTicket() {
-    const url = window.location.href;
+    //const url = window.location.href;
+    const url = window.location.origin;
     const [dataUrl, setDataUrl] = useState("");
   
     const navigator = useNavigate();
@@ -29,7 +30,7 @@ function GetTicket() {
     }, [progress]);
     const { service_type, ticket_number } = useParams<{ service_type: string, ticket_number: string }>();
     const handleQRCodeGeneration = () => {
-        QRCode.toDataURL(url, { width: 300 }, (err, dataUrl) => {
+        QRCode.toDataURL(`${url}/customer/togo/${service_type}/${ticket_number}`, { width: 300 }, (err, dataUrl) => {
             if (err) console.error(err);
             // set dataUrl state to dataUrl
             setDataUrl(dataUrl);
