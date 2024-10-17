@@ -20,6 +20,7 @@ describe('Line API Integration Tests', () => {
     await db.run('INSERT INTO services (id, description, queue_length, current_number, service_time) VALUES (4,"servizio 4", 20, 15, 5)');
   });
 
+  const counter = 1;
 
   describe('POST /api/line/next-customer', () => {
 
@@ -28,7 +29,7 @@ describe('Line API Integration Tests', () => {
      
 
       const response = await request(server)
-        .post('/api/line/next-customer')
+        .post(`/api/line/next-customer/${counter}`)
         .send();
 
       expect(response.status).toBe(200);
@@ -43,7 +44,7 @@ describe('Line API Integration Tests', () => {
       await db.close();
 
       const response = await request(server)
-        .post('/api/line/next-customer')
+        .post(`/api/line/next-customer/${counter}`)
         .send();
 
       expect(response.status).toBe(500);
